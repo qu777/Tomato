@@ -11,9 +11,8 @@ void snake::setpos(int i, int j)//设置光标的位置
 {
 	COORD pos = { i - 1,j - 1 };
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-	//CONSOLE_CURSOR_INFO  cci;
-	//cci.bVisible = FALSE; //这个设置光标是否显示
-	//BOOL bResult = SetConsoleCursorInfo(out, &cci);
+	CONSOLE_CURSOR_INFO cursor_info = { 1,0 };
+	SetConsoleCursorInfo(out, &cursor_info);
 	SetConsoleCursorPosition(out, pos);
 }
 
@@ -48,16 +47,16 @@ void snake::edge()//设置边界，结束条件
 	for (i = 1; i <= 77; i++)
 	{
 		setpos(i, 1);
-		cout << "--";
+		cout << "*";
 		setpos(i, 29);
-		cout << "--";
+		cout << "*";
 	}
 	for (i = 2; i <= 28; i++)
 	{
 		setpos(1, i);
-		cout << "|";
+		cout << "*";
 		setpos(77, i);
-		cout << "|";
+		cout << "*";
 	}
 	setpos(80, 3);
 	cout << "Snake";
@@ -114,7 +113,9 @@ int snake::over()//游戏结束
 void snake::print()//形成蛇
 {
 	boby *p;
-	p = head;
+	setpos(head->x, head->y);
+	cout << "@" << endl;
+	p = head->next;
 	while (p != nullptr)
 	{
 		setpos(p->x, p->y);
